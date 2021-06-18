@@ -78,7 +78,8 @@ export function getOldestVersions(
   repo: string,
   packageName: string,
   numVersions: number,
-  token: string
+  token: string,
+  keepLatest: number
 ): Observable<VersionInfo[]> {
   return queryForOldestVersions(
     owner,
@@ -104,6 +105,7 @@ export function getOldestVersions(
 
       return versions
         .map(value => ({id: value.node.id, version: value.node.version}))
+        .slice(keepLatest)
         .reverse()
     })
   )

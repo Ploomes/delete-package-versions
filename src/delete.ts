@@ -14,7 +14,8 @@ export function getVersionIds(input: Input): Observable<string[]> {
       input.repo,
       input.packageName,
       input.numOldVersionsToDelete,
-      input.token
+      input.token,
+      input.keepLatest
     ).pipe(map(versionInfo => versionInfo.map(info => info.id)))
   }
 
@@ -31,6 +32,13 @@ export function deleteVersions(input: Input): Observable<boolean> {
   if (input.numOldVersionsToDelete <= 0) {
     console.log(
       'Number of old versions to delete input is 0 or less, no versions will be deleted'
+    )
+    return of(true)
+  }
+
+  if (input.keepLatest < 0) {
+    console.log(
+      'Number of latest version to keep input is less than 0, no versions will be deleted'
     )
     return of(true)
   }
